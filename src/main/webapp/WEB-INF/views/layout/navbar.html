@@ -1,0 +1,94 @@
+<div class="container-fluid bg-white sticky-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-2 py-lg-0">
+            <a href="/home" class="navbar-brand">
+                <img class="img-fluid" th:src="@{/img/logo.png}" alt="Logo">
+            </a>
+            <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto">
+                    <a href="/home" class="nav-item nav-link ">Home</a>
+                    <a href="/about" class="nav-item nav-link">About</a>
+                    <a href="/products" class="nav-item nav-link">Products</a>
+                    <a href="/store" class="nav-item nav-link">Store</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                        <div class="dropdown-menu bg-light rounded-0 m-0">
+                            <a href="/feature" class="dropdown-item">Features</a>
+                            <a href="/blog" class="dropdown-item">Blog Article</a>
+                            <a href="/testimonial" class="dropdown-item">Testimonial</a>
+
+                        </div>
+                    </div>
+                    <a href="/contact" class="nav-item nav-link">Contact</a>
+                    <a th:href="@{/login}" class="nav-item nav-link" th:if="${session.userLogin}==null"th:text="Login"></a>
+                    <div th:unless="${session.userLogin}==null" class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" th:text="${session.userLogin.getLastName()}">
+                        </a>
+                        <div class="dropdown-menu bg-light rounded-0 m-0">
+                            <a th:href="@{/logout}" class="dropdown-item">Logout</a>
+                            <a th:href="@{|/change/${session.userLogin.id}|}" class="dropdown-item">Change information</a>
+                            <a th:href="@{|/history/${session.userLogin.id}|}" class="dropdown-item">History</a>
+
+                        </div>
+                    </div>
+<!--                    <a th:href="@{/login}" class="nav-item nav-link" th:if="${session.userLogin}==null"th:text="Login"></a>-->
+<!--                    <a th:href="@{/logout}" class="nav-item nav-link" th:unless="${session.userLogin}==null"th:text="${session.userLogin.getLastName()}"></a>-->
+                </div>
+                <div class="border-start ps-4 d-none d-lg-block">
+                    <button type="button" class="btn btn-sm p-0"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa-solid fa-cart-shopping"></i></button>
+
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header">
+                            <h5 id="offcanvasRightLabel">MY CART <i class="fa-solid fa-leaf" style="color: #85d336;"></i></h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                                <table cellpadding="8px" style="text-align-all: center">
+                                    <thead>
+                                    <tr style="font-size: 12px">
+
+                                        <th>PRODUCT</th>
+                                        <th>PRICE</th>
+                                        <th>QUANTITY</th>
+                                        <th>TOTAL</th>
+                                        <th colspan="2">ACTION</th>
+                                    </tr>
+                                    <th:block  th:each="p,loop:${session.cart}">
+                                <form th:action="@{'/cart/update/'+${p.id}}" method="post">
+                                    <tr style="font-size: 12px">
+                                    <td>
+                                        <div class="cart-pro">
+                                            <img width="50" height="50" style="object-fit: cover" th:src="@{|/upload/${p.p.image}|}" alt="#">
+                                            <span th:text="${p.p.product_name}"></span>
+                                            <span th:text="${p.p.product_id}" style="display: none"></span>
+                                        </div>
+                                    </td>
+                                    <td th:text="${p.p.price+' $'}"></td>
+                                    <td><input type="number" th:value="${p.quantity}" name="quantity" style="width: 40px" min="0"></td>
+                                    <td th:text="${p.p.price*p.quantity +' $'}"></td>
+                                    <td><button type="submit" style="background: none;border: none"><i class="fa-solid fa-check" style="color: #91f051;"></i></button></td>
+                                    <td><a  onclick="return confirm('Are you sure?')" th:href="@{'/cart/delete/'+${p.id}}"><i class="fa-solid fa-minus" style="color: #e94b3f;"></i></a></td>
+                                    </tr>
+
+                                </form>
+                                    </th:block>
+                                    <tr >
+                                        <th colspan="8" th:text="'Total Amount: '+${session.total}+' $'">
+                                    </tr>
+                                    <tr>
+                                        <th colspan="8"> <a th:href="@{/cart/order}"  class="btn btn-primary">Checkout</a></th>
+                                    </tr>
+                                </table>
+
+                        </div>
+                    </div>
+<!--                    <a th:href="@{/cart}" class="btn btn-sm p-0"><i class="fa-solid fa-cart-shopping"></i></a>-->
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>

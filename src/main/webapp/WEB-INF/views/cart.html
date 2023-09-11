@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background-color: #eee
+        }
+
+        nav,
+        .wrapper {
+            padding: 10px 50px
+        }
+
+        nav .logo a {
+            color: #000;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none
+        }
+
+        nav div.ml-auto a {
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem
+        }
+
+        header {
+            padding: 20px 0px
+        }
+
+        header .active {
+            font-weight: 700;
+            position: relative
+        }
+
+        header .active .fa-check {
+            position: absolute;
+            left: 50%;
+            bottom: -27px;
+            background-color: #fff;
+            font-size: 0.7rem;
+            padding: 5px;
+            border: 1px solid #008000;
+            border-radius: 50%;
+            color: #008000
+        }
+
+        .progress {
+            height: 2px;
+            background-color: #ccc
+        }
+
+        .progress div {
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .progress .progress-bar {
+            width: 40%
+        }
+
+        #details {
+            padding: 30px 50px;
+            min-height: 300px
+        }
+
+        input {
+            border: none;
+            outline: none
+        }
+
+        .form-group .d-flex {
+            border: 1px solid #ddd
+        }
+
+        .form-group .d-flex input {
+            width: 95%
+        }
+
+        .form-group .d-flex:hover {
+            color: #000;
+            cursor: pointer;
+            border: 1px solid #008000
+        }
+
+        select {
+            width: 100%;
+            padding: 8px 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px
+        }
+
+        input[type="checkbox"] + label {
+            font-size: 0.85rem;
+            font-weight: 600
+        }
+
+        #address,
+        #cart,
+        #summary {
+            padding: 20px 50px
+        }
+
+        #address .d-md-flex p.text-justify,
+        #register p.text-muted {
+            margin: 0
+        }
+
+        #register {
+            background-color: #d9ecf2
+        }
+
+        #register a {
+            text-decoration: none;
+            color: #333
+        }
+
+        #cart,
+        #summary {
+            max-width: 500px
+        }
+
+        .h6 {
+            font-size: 1.2rem;
+            font-weight: 700
+        }
+
+        .h6 a {
+            text-decoration: none;
+            font-size: 1rem
+        }
+
+        .item img {
+            object-fit: cover;
+            border-radius: 5px
+        }
+
+        .item {
+            position: relative
+        }
+
+        .number {
+            position: absolute;
+            font-weight: 800;
+            color: #fff;
+            background-color: #0033ff;
+            padding-left: 7px;
+            border-radius: 50%;
+            border: 1px solid #fff;
+            width: 25px;
+            height: 25px;
+            top: -5px;
+            right: -5px
+        }
+
+        .display-5 {
+            font-size: 1.2rem
+        }
+
+        #cart ~ p.text-muted {
+            margin: 0;
+            font-size: 0.9rem
+        }
+
+        tr.text-muted td {
+            border: none
+        }
+
+        .fa-minus,
+        .fa-plus {
+            font-size: 0.7rem
+        }
+
+        .table td {
+            padding: 0.3rem
+        }
+
+        .btn.text-uppercase {
+            border: 1px solid #333;
+            font-weight: 600;
+            border-radius: 0px
+        }
+
+        .btn.text-uppercase:hover {
+            background-color: #333;
+            color: #eee
+        }
+
+        .btn.text-white {
+            background-color: #66cdaa;
+            border-radius: 0px
+        }
+
+        .btn.text-white:hover {
+            background-color: #3cb371
+        }
+
+        .wrapper .row + div.text-muted {
+            font-size: 0.9rem
+        }
+
+        .mobile,
+        #mobile {
+            display: none
+        }
+
+        .buttons {
+            vertical-align: text-bottom
+        }
+
+        #register {
+            width: 50%
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .progress .progress-bar {
+                width: 33%
+            }
+
+            #cart,
+            #summary {
+                max-width: 100%
+            }
+
+            .wrapper div.h5.large,
+            .wrapper .row + div.text-muted {
+                display: none
+            }
+
+            .mobile.h5,
+            #mobile {
+                display: block
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767px) {
+            .progress .progress-bar {
+                width: 29%
+            }
+
+            #cart,
+            #summary {
+                max-width: 100%
+            }
+
+            .wrapper div.h5.large,
+            .wrapper .row + div.text-muted {
+                display: none
+            }
+
+            .mobile.h5,
+            #mobile {
+                display: block
+            }
+
+            .buttons {
+                width: 100%
+            }
+        }
+
+        @media (max-width: 575px) {
+            .progress .progress-bar {
+                width: 38%
+            }
+
+            #cart,
+            #summary {
+                max-width: 100%
+            }
+
+            nav,
+            .wrapper {
+                padding: 10px 30px
+            }
+
+            #register {
+                width: 100%
+            }
+        }
+
+        @media (max-width: 424px) {
+            body {
+                width: fit-content
+            }
+        }
+
+        @media (max-width: 375px) {
+            .progress .progress-bar {
+                width: 35%
+            }
+
+            body {
+                width: fit-content
+            }
+        }
+    </style>
+</head>
+
+<body>
+<th:block th:insert="layout/navbar.html"></th:block>
+
+<header>
+<!--    <div class="d-flex justify-content-center align-items-center pb-3">-->
+<!--        <div class="px-sm-5 px-2 active">SHOPPING CART <span class="fas fa-check"></span></div>-->
+<!--        <div class="px-sm-5 px-2">CHECKOUT</div>-->
+<!--        <div class="px-sm-5 px-2">FINISH</div>-->
+<!--    </div>-->
+<!--    <div class="progress">-->
+<!--        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="25" aria-valuemin="0"-->
+<!--             aria-valuemax="100"></div>-->
+<!--    </div>-->
+</header>
+<!-- Page Header Start -->
+<!--<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">-->
+<!--    <div class="container text-center py-5">-->
+<!--        <h1 class="display-2 text-dark mb-4 animated slideInDown">Checkout</h1>-->
+<!--        <nav aria-label="breadcrumb animated slideInDown">-->
+<!--            <ol class="breadcrumb justify-content-center mb-0">-->
+<!--                <li class="breadcrumb-item"><a href="#">Home</a></li>-->
+<!--                <li class="breadcrumb-item"><a href="#">Pages</a></li>-->
+<!--                <li class="breadcrumb-item text-dark" aria-current="page">Checkout</li>-->
+<!--            </ol>-->
+<!--        </nav>-->
+<!--    </div>-->
+<!--</div>-->
+<!-- Page Header End -->
+
+<div class="wrapper">
+    <div class="h5 large">Billing Address</div>
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1">
+            <div class="mobile h5">Billing Address</div>
+            <div id="details" class="bg-white rounded pb-5">
+                <form th:action="@{/cart/order}" method="post" th:object="${order}">
+                    <div class="form-group">
+                        <label class="text-muted">Name</label>
+                        <input type="text" name="name" th:value="${session.userLogin.firstName}" class="form-control">
+                    </div>
+                    <div class="form-group"><label class="text-muted">Email</label>
+                        <div class="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="email" name="email" th:value="${session.userLogin.email}"> <span
+                                class="fas fa-check text-success pr-sm-2 pr-0"></span></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <div class="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" name="address" th:value="${session.userLogin.address}"> <span
+                                class="fas fa-check text-success pr-2"></span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="d-flex jusify-content-start align-items-center rounded p-2">
+                            <input type="text" name="phone"> <span class="fas fa-check text-success pr-2"></span></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="d-flex jusify-content-start align-items-center rounded p-2">
+                            <label for="exampleFormControlTextarea1" class="form-label">Note</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" name="note"
+                                      rows="3"></textarea>
+                        </div>
+                    </div>
+                    <input type="submit" value="Check out">
+                </form>
+            </div>
+            <input type="checkbox" checked> <label>Shipping address is same as billing</label>
+            <!--            <div id="address" class="bg-light rounded mt-3">-->
+            <!--                <div class="h5 font-weight-bold text-primary"> Shopping Address </div>-->
+            <!--                <div class="d-md-flex justify-content-md-start align-items-md-center pt-3">-->
+            <!--                    <div class="mr-auto"> <b>Home Address</b>-->
+            <!--                        <p class="text-justify text-muted">542 W.14th Street</p>-->
+            <!--                        <p class="text-uppercase text-muted">NY</p>-->
+            <!--                    </div>-->
+            <!--                    <div class="rounded py-2 px-3" id="register"> <a href="#"> <b>Register Now</b> </a>-->
+            <!--                        <p class="text-muted">Create account to have multiple address saved</p>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+        <div class="col-lg-6 col-md-8 col-sm-10 offset-lg-0 offset-md-2 offset-sm-1 pt-lg-0 pt-3">
+            <div id="cart" class="bg-white rounded">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="h6">Cart Summary</div>
+                </div>
+                <div class="d-flex jusitfy-content-between align-items-center pt-3 pb-2 border-bottom">
+                    <th:block th:each="ci:${session.cart}">
+                        <div class="item pr-2">
+                            <img th:src="@{|/upload/${ci.p.image}|}" alt="" width="80" height="80">
+                            <div class="number" th:text="${ci.quantity}"></div>
+                        </div>
+                        <div class="d-flex flex-column px-3">
+                            <b class="h5" th:text="${ci.p.product_name}"></b>
+                            <div class="ml-auto"><b class="h5" th:text="${ci.p.price}"></b>
+                            </div>
+
+                        </div>
+                    </th:block>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="display-5">Subtotal</div>
+                    <div class="ml-auto font-weight-bold" th:text="${session.total}"></div>
+                </div>
+                <div class="d-flex align-items-center py-2 border-bottom">
+                    <div class="display-5">Shipping</div>
+                    <div class="ml-auto font-weight-bold">$0</div>
+                </div>
+                <div class="d-flex align-items-center py-2">
+                    <div class="display-5">Total</div>
+                    <div class="ml-auto d-flex">
+                        <div class="text-primary text-uppercase px-3">usd</div>
+                        <div class="font-weight-bold" th:text="${session.total}"></div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-muted">Need help with an order?</p>
+            <p class="text-muted"><a href="#" class="text-danger">Hotline:</a>+314440160 (International)</p>
+            <div class="h4 pt-3"><span class="fas fa-shield-alt text-primary pr-2"></span> Security of your shopping
+            </div>
+<!--            <div id="summary" class="bg-white rounded py-2 my-4">-->
+<!--                <div class="table-responsive">-->
+<!--                    <table class="table table-borderless w-75">-->
+<!--                        <tbody>-->
+<!--                        <tr class="text-muted">-->
+<!--                            <td>Battlecreek Coffee</td>-->
+<!--                            <td>:</td>-->
+<!--                            <td>$80.9</td>-->
+<!--                        </tr>-->
+<!--                        <tr class="text-muted">-->
+<!--                            <td>Code-770</td>-->
+<!--                            <td>:</td>-->
+<!--                            <td>770</td>-->
+<!--                        </tr>-->
+<!--                        <tr class="text-muted">-->
+<!--                            <td>Quantity</td>-->
+<!--                            <td>:</td>-->
+<!--                            <td>-->
+<!--                                <div class="d-flex align-items-center"><span class="fas fa-minus btn text-muted"></span>-->
+<!--                                    <span>2</span> <span class="fas fa-plus btn text-muted"></span></div>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--                <div class="border-top py-2 d-flex align-items-center ml-2 font-weight-bold">-->
+<!--                    <div>Total</div>-->
+<!--                    <div class="ml-auto text-primary">USD</div>-->
+<!--                    <div class="px-2">$92.98</div>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="row pt-lg-3 pt-2 buttons mb-sm-0 mb-2">
+                <div class="col-md-6">
+                    <a href="/store" class="btn text-uppercase">back to shopping</a>
+                </div>
+                <div class="col-md-6 pt-md-0 pt-3">
+                    <div class="btn text-white ml-auto"><span class="fas fa-lock"></span> Continue to Shopping</div>
+                </div>
+            </div>
+            <div class="text-muted pt-3" id="mobile"><span class="fas fa-lock"></span> Your information is save</div>
+        </div>
+    </div>
+    <div class="text-muted"><span class="fas fa-lock"></span> Your information is save</div>
+</div>
+
+<!--<table border="1" cellpadding="20px" cellspacing="10px">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>STT</th>-->
+<!--        <th>NAME</th>-->
+<!--        <th>IMAGE</th>-->
+<!--        <th>PRICE</th>-->
+<!--        <th>QUANTITY</th>-->
+<!--        <th>TOTAL AMOUNT</th>-->
+<!--        <th colspan="2">ACTION</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:each="ci,loop:${session.cart}" >-->
+<!--        <form th:action="@{'/cart/update/'+${ci.id}}" method="post">-->
+<!--            <td th:text="${loop.count}"></td>-->
+<!--            <td th:text="${ci.p.product_id}"></td>-->
+<!--            <td><img width="100" height="100" style="object-fit: cover" th:src="@{|/upload/${ci.p.image}|}" alt="#"></td>-->
+<!--            <td th:text="${ci.p.price+' $'}"></td>-->
+<!--            <td><input type="number" th:value="${ci.quantity}" name="quantity"></td>-->
+<!--            <td th:text="${ci.p.price*ci.quantity +' $'}"></td>-->
+<!--            <td><button type="submit">Update</button></td>-->
+<!--            <td><a  onclick="return confirm('Bạn có muốnn xóa không')" th:href="@{'/cart/delete/'+${ci.id}}">Delete</a></td>-->
+<!--        </form>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--    <tfoot>-->
+<!--    <tr>-->
+<!--        <th colspan="8" th:text="${'Tổng tiền: '+total +' $'}"></th>-->
+<!--    </tr>-->
+<!--    </tfoot>-->
+<!--</table>-->
+<!-- Footer Start -->
+<div class="container-fluid bg-dark footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-3 col-md-6">
+                <h4 class="text-primary mb-4">Our Office</h4>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary me-3"></i>123 Street, New York, USA</p>
+                <p class="mb-2"><i class="fa fa-phone-alt text-primary me-3"></i>+012 345 67890</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary me-3"></i>info@example.com</p>
+                <div class="d-flex pt-3">
+                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
+                    <a class="btn btn-square btn-primary rounded-circle me-2" href=""><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h4 class="text-primary mb-4">Quick Links</h4>
+                <a class="btn btn-link" href="">About Us</a>
+                <a class="btn btn-link" href="">Contact Us</a>
+                <a class="btn btn-link" href="">Our Services</a>
+                <a class="btn btn-link" href="">Terms & Condition</a>
+                <a class="btn btn-link" href="">Support</a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h4 class="text-primary mb-4">Business Hours</h4>
+                <p class="mb-1">Monday - Friday</p>
+                <h6 class="text-light">09:00 am - 07:00 pm</h6>
+                <p class="mb-1">Saturday</p>
+                <h6 class="text-light">09:00 am - 12:00 pm</h6>
+                <p class="mb-1">Sunday</p>
+                <h6 class="text-light">Closed</h6>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h4 class="text-primary mb-4">Newsletter</h4>
+                <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                <div class="position-relative w-100">
+                    <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+                    <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+
+<!-- Copyright Start -->
+<div class="container-fluid copyright py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                &copy; <a class="fw-medium" href="#">Your Site Name</a>, All Right Reserved.
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                Designed By <a class="fw-medium" href="https://htmlcodex.com">HTML Codex</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Copyright End -->
+
+<th:block th:insert="/layout/foot.html"></th:block>
+</body>
+</html>
